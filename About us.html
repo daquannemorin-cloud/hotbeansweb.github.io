@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:      #08CAB9;
+      --teal-dark: #05a396;
+      --teal-deep: #037a72;
+      --off-white: #f0fdfc;
+      --text-dark: #0d2b29;
+      --text-mid:  #2e6e68;
+      --border:    #b2ebe6;
+      --card-bg:   rgba(255,255,255,0.92);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--teal);
+      background-image:
+        radial-gradient(ellipse at 10% 20%, rgba(255,255,255,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(5,100,90,0.25) 0%, transparent 50%);
+      min-height: 100vh;
+      color: var(--text-dark);
+    }
+
+    /* ── SEARCH BAR ── */
+    .search-bar {
+      background: var(--teal-deep);
+      padding: 10px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .search-bar input {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: none;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      width: 240px;
+      outline: none;
+      background: rgba(255,255,255,0.15);
+      color: white;
+    }
+    .search-bar input::placeholder { color: rgba(255,255,255,0.6); }
+    .search-bar button {
+      background: white;
+      color: var(--teal-deep);
+      border: none;
+      padding: 7px 18px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+    }
+    .search-wrapper { position: relative; }
+    .search-results {
+      display: none;
+      position: absolute;
+      top: 44px;
+      right: 0;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      width: 300px;
+      z-index: 999;
+      overflow: hidden;
+    }
+    .search-results.active { display: block; }
+    .search-result-item {
+      padding: 12px 18px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--text-dark);
+    }
+    .search-result-item:hover { background: var(--off-white); }
+    .search-result-item:last-child { border-bottom: none; }
+
+    /* ── PAGE ── */
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 50px 24px 60px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(36px, 6vw, 58px);
+      font-weight: 800;
+      color: white;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+    }
+    .hero h1 span {
+      color: var(--teal-deep);
+      background: white;
+      padding: 0 10px;
+      border-radius: 6px;
+    }
+    .hero p {
+      margin-top: 16px;
+      font-size: 15px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.8;
+      max-width: 620px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── STAT BADGES ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 36px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 28px 20px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    .stat-card .number {
+      font-family: 'Syne', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--teal-deep);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-card p {
+      font-size: 13px;
+      color: var(--text-mid);
+      font-weight: 500;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 40px 44px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      border: 1px solid rgba(255,255,255,0.6);
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-title .badge {
+      background: var(--teal);
+      color: white;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+    .card p {
+      font-size: 15px;
+      color: #444;
+      line-height: 1.8;
+    }
+
+    /* ── VALUES GRID ── */
+    .values-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 6px;
+    }
+    .value-item {
+      background: var(--off-white);
+      border-radius: 12px;
+      padding: 20px;
+      border-left: 4px solid var(--teal);
+    }
+    .value-item h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+    .value-item p {
+      font-size: 13px !important;
+      color: var(--text-mid) !important;
+      line-height: 1.6 !important;
+    }
+
+    /* ── TEAM CARDS ── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 6px;
+    }
+    .team-card {
+      background: var(--off-white);
+      border-radius: 12px;
+      padding: 22px 18px;
+      text-align: center;
+    }
+    .team-card .avatar {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: white;
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+    }
+    .team-card h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .team-card p {
+      font-size: 12px !important;
+      color: var(--text-mid) !important;
+    }
+
+    /* ── LINKS ── */
+    .links-section { margin-top: 10px; }
+    .links-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+    .links-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .links-grid a {
+      background: rgba(255,255,255,0.18);
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: background 0.2s;
+    }
+    .links-grid a:hover { background: rgba(255,255,255,0.3); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .stats { grid-template-columns: 1fr; }
+      .values-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .card { padding: 28px 22px; }
+      .search-bar { padding: 10px 16px; }
+      .search-bar input { width: 150px; }
+    }
+    @media (min-width: 601px) and (max-width: 768px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar">
+    <div class="search-wrapper">
+      <input type="text" id="siteSearch" placeholder="Search this site..."
+        oninput="runSearch(this.value)"
+        onkeydown="if(event.key==='Enter') runSearch(this.value)">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+    <button onclick="runSearch(document.getElementById('siteSearch').value)">Search</button>
+  </div>
+
+  <div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>About <span>Us</span></h1>
+      <p>We are a forward thinking digital company focused on creating high quality, user friendly
+      websites for a wide range of clients. Our team is passionate about combining creativity with
+      technical skills to deliver modern web solutions.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="number">5+</div>
+        <p>Years of Experience</p>
+      </div>
+      <div class="stat-card">
+        <div class="number">50+</div>
+        <p>Projects Delivered</p>
+      </div>
+      <div class="stat-card">
+        <div class="number">100%</div>
+        <p>Client Satisfaction</p>
+      </div>
+    </div>
+
+    <!-- WHO WE ARE -->
+    <div class="card">
+      <div class="card-title"><span class="badge">&#9432;</span> Who We Are</div>
+      <p>We are a forward thinking digital company focused on creating high quality, user friendly
+      websites for a wide range of clients. Our team is very passionate about combining creativity
+      with technical skills to deliver modern web solutions that meet both business and user needs.
+      We aim to provide reliable services, maintain strong client relationships, and continuously
+      improve our design to keep up with the latest industry trends.</p>
+    </div>
+
+    <!-- OUR VALUES -->
+    <div class="card">
+      <div class="card-title"><span class="badge">&#10022;</span> Our Values</div>
+      <div class="values-grid">
+        <div class="value-item">
+          <h4>&#127775; Quality First</h4>
+          <p>We never cut corners. Every project is built to the highest standard from start to finish.</p>
+        </div>
+        <div class="value-item">
+          <h4>&#129309; Client Focus</h4>
+          <p>We maintain strong relationships with our clients and always put their needs at the centre of our work.</p>
+        </div>
+        <div class="value-item">
+          <h4>&#128161; Innovation</h4>
+          <p>We keep up with the latest industry trends to deliver fresh, modern solutions.</p>
+        </div>
+        <div class="value-item">
+          <h4>&#128200; Reliability</h4>
+          <p>We deliver on our promises, on time and within scope, every single time.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEET THE TEAM -->
+    <div class="card">
+      <div class="card-title"><span class="badge">&#128101;</span> Meet the Team</div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="avatar">W</div>
+          <h4>Walid</h4>
+          <p>Junior Developer</p>
+        </div>
+        <div class="team-card">
+          <div class="avatar">J</div>
+          <h4>Jeff</h4>
+          <p>UI &amp; Design</p>
+        </div>
+        <div class="team-card">
+          <div class="avatar">S</div>
+          <h4>Steven</h4>
+          <p>QA &amp; Testing</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE LINKS -->
+    <div class="links-section">
+      <h2>Pages</h2>
+      <div class="links-grid">
+        <a href="Contact us.html">Contact Us</a>
+        <a href="Non Optimised website.html">Profile of Company Image</a>
+		<a href="Service and news.html">Services and news</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const pages = [
+      { title: 'Contact Us',               url: 'Contact us.html' },
+      { title: 'Profile of Company Image', url: 'Non Optimised website.html' },
+      { title: 'About Us',                 url: 'About us.html' },
+	  { title: 'Services and news',        url: 'Service and news.html'}
+    ];
+
+    function runSearch(query) {
+      const q = query.trim().toLowerCase();
+      const resultsEl = document.getElementById('searchResults');
+      if (!q) { resultsEl.classList.remove('active'); return; }
+      const matches = pages.filter(p => p.title.toLowerCase().includes(q));
+      resultsEl.innerHTML = matches.length === 0
+        ? '<div class="search-result-item">No results found.</div>'
+        : matches.map(p =>
+            '<div class="search-result-item" onclick="window.location.href=\'' + p.url + '\'">' + p.title + '</div>'
+          ).join('');
+      resultsEl.classList.add('active');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-wrapper') && !e.target.closest('.search-bar button')) {
+        document.getElementById('searchResults').classList.remove('active');
+      }
+    });
+  </script>
+
+</body>
+</html>
+
