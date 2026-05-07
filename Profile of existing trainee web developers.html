@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile of Existing Trainee Web Developers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:      #08CAB9;
+      --teal-dark: #05a396;
+      --teal-deep: #037a72;
+      --off-white: #f0fdfc;
+      --text-dark: #0d2b29;
+      --text-mid:  #2e6e68;
+      --border:    #b2ebe6;
+      --card-bg:   rgba(255,255,255,0.93);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--teal);
+      background-image:
+        radial-gradient(ellipse at 10% 20%, rgba(255,255,255,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(5,100,90,0.25) 0%, transparent 50%);
+      min-height: 100vh;
+      color: var(--text-dark);
+    }
+
+    /* ── SEARCH BAR ── */
+    .search-bar {
+      background: var(--teal-deep);
+      padding: 10px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .search-bar input {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: none;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      width: 240px;
+      outline: none;
+      background: rgba(255,255,255,0.15);
+      color: white;
+    }
+    .search-bar input::placeholder { color: rgba(255,255,255,0.6); }
+    .search-bar button {
+      background: white;
+      color: var(--teal-deep);
+      border: none;
+      padding: 7px 18px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+    }
+    .search-wrapper { position: relative; }
+    .search-results {
+      display: none;
+      position: absolute;
+      top: 44px;
+      right: 0;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      width: 300px;
+      z-index: 999;
+      overflow: hidden;
+    }
+    .search-results.active { display: block; }
+    .search-result-item {
+      padding: 12px 18px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--text-dark);
+    }
+    .search-result-item:hover { background: var(--off-white); }
+    .search-result-item:last-child { border-bottom: none; }
+
+    /* ── PAGE ── */
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 50px 24px 70px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 800;
+      color: white;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+    }
+    .hero h1 span {
+      color: var(--teal-deep);
+      background: white;
+      padding: 0 10px;
+      border-radius: 6px;
+    }
+    .hero p {
+      margin-top: 16px;
+      font-size: 15px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.8;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-link {
+      display: inline-block;
+      margin-top: 20px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      text-decoration: none;
+      padding: 10px 24px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: background 0.2s;
+    }
+    .hero-link:hover { background: rgba(255,255,255,0.35); }
+
+    /* ── TEAM SEARCH ── */
+    .team-search-box {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 24px 30px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255,255,255,0.6);
+      margin-bottom: 36px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .team-search-box input {
+      flex: 1;
+      min-width: 200px;
+      padding: 11px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-dark);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .team-search-box input:focus { border-color: var(--teal); }
+    .team-search-box select {
+      padding: 11px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-dark);
+      outline: none;
+      background: white;
+      cursor: pointer;
+    }
+    .team-search-box select:focus { border-color: var(--teal); }
+    .team-search-box label {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-dark);
+      white-space: nowrap;
+    }
+    #teamResultsCount {
+      font-size: 13px;
+      color: var(--text-mid);
+      white-space: nowrap;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* ── TRAINEE CARDS ── */
+    .trainees-list {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin-bottom: 50px;
+    }
+
+    .trainee-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      transition: transform 0.2s;
+    }
+    .trainee-card:hover { transform: translateY(-3px); }
+
+    /* Photo side */
+    .trainee-photo-side {
+      position: relative;
+      background: linear-gradient(160deg, var(--teal-deep), var(--teal));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 36px 24px;
+      text-align: center;
+    }
+    .trainee-photo {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255,255,255,0.5);
+      margin-bottom: 16px;
+    }
+    .trainee-initials {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: 4px solid rgba(255,255,255,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .trainee-photo-side h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 4px;
+    }
+    .trainee-role {
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+    .trainee-level-badge {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+    .trainee-socials {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .social-link {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: background 0.2s;
+    }
+    .social-link:hover { background: rgba(255,255,255,0.35); }
+
+    /* Info side */
+    .trainee-info-side {
+      padding: 32px 36px;
+    }
+    .trainee-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .tag-spec    { background: #e0f7f5; color: var(--teal-deep); border: 1px solid var(--border); }
+    .tag-loc     { background: #fff3e0; color: #a05000; border: 1px solid #ffd199; }
+    .tag-joined  { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+
+    .info-section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--teal-deep);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      margin-top: 18px;
+    }
+    .info-section-title:first-of-type { margin-top: 0; }
+
+    .trainee-info-side p {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    /* Skills bar */
+    .skills-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .skill-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .skill-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-mid);
+      width: 90px;
+      flex-shrink: 0;
+    }
+    .skill-bar-bg {
+      flex: 1;
+      height: 8px;
+      background: var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--teal-deep), var(--teal));
+    }
+    .skill-pct {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--teal-deep);
+      width: 34px;
+      text-align: right;
+    }
+
+    /* Strengths / weaknesses */
+    .sw-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .sw-box {
+      background: var(--off-white);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .sw-box.strength { border-left: 4px solid #43a047; }
+    .sw-box.weakness { border-left: 4px solid #e53935; }
+    .sw-box h5 {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .sw-box.strength h5 { color: #2e7d32; }
+    .sw-box.weakness h5 { color: #c62828; }
+    .sw-box ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sw-box ul li {
+      font-size: 12px;
+      color: #555;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .sw-box.strength ul li::before { content: '✓'; color: #43a047; font-weight: 700; }
+    .sw-box.weakness ul li::before { content: '✗'; color: #e53935; font-weight: 700; }
+
+    /* Goals */
+    .goals-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .goals-list li {
+      font-size: 13px;
+      color: #444;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .goals-list li::before {
+      content: '→';
+      color: var(--teal-deep);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Hot Beans Meet the Team link */
+    .hbw-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+      background: var(--teal-deep);
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Syne', sans-serif;
+      transition: background 0.2s;
+    }
+    .hbw-link:hover { background: var(--teal-dark); }
+
+    /* No results */
+    .no-results {
+      display: none;
+      text-align: center;
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 50px 30px;
+      color: var(--text-mid);
+      font-size: 15px;
+    }
+    .no-results .big { font-size: 48px; margin-bottom: 14px; }
+
+    /* ── ABOUT THE PROGRAMME ── */
+    .prog-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 36px 42px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      border: 1px solid rgba(255,255,255,0.6);
+      margin-bottom: 24px;
+    }
+    .prog-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .prog-title .pbadge {
+      background: var(--teal);
+      color: white;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+    .prog-card p {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.85;
+      margin-bottom: 10px;
+    }
+    .prog-card p:last-child { margin-bottom: 0; }
+    .prog-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .prog-item {
+      background: var(--off-white);
+      border-radius: 12px;
+      padding: 18px 16px;
+      border-top: 3px solid var(--teal);
+      text-align: center;
+    }
+    .prog-item .picon { font-size: 28px; margin-bottom: 8px; }
+    .prog-item h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 5px;
+    }
+    .prog-item p {
+      font-size: 12px !important;
+      color: var(--text-mid) !important;
+      line-height: 1.5 !important;
+      margin-bottom: 0 !important;
+    }
+
+    /* ── PAGE LINKS ── */
+    .links-section { margin-top: 10px; }
+    .links-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+    }
+    .links-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .links-grid a {
+      background: rgba(255,255,255,0.18);
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: background 0.2s;
+    }
+    .links-grid a:hover { background: rgba(255,255,255,0.3); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .trainee-card { grid-template-columns: 1fr; }
+      .trainee-photo-side { padding: 30px 24px; }
+      .trainee-info-side { padding: 24px 22px; }
+      .sw-grid { grid-template-columns: 1fr; }
+      .prog-grid { grid-template-columns: 1fr; }
+      .prog-card { padding: 28px 22px; }
+      .search-bar { padding: 10px 16px; }
+      .search-bar input { width: 150px; }
+    }
+    @media (min-width: 701px) and (max-width: 860px) {
+      .trainee-card { grid-template-columns: 220px 1fr; }
+      .prog-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar">
+    <div class="search-wrapper">
+      <input type="text" id="siteSearch" placeholder="Search this site..."
+        oninput="runSiteSearch(this.value)"
+        onkeydown="if(event.key==='Enter') runSiteSearch(this.value)">
+      <div class="search-results" id="siteSearchResults"></div>
+    </div>
+    <button onclick="runSiteSearch(document.getElementById('siteSearch').value)">Search</button>
+  </div>
+
+  <div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>Meet Our <span>Trainee Developers</span></h1>
+      <p>Get to know the talented individuals currently going through our junior web developer
+      training programme at Hot Beans Web. Each trainee brings unique skills, perspectives
+      and ambitions to our growing team.</p>
+      <a class="hero-link"
+         href="https://www.hotbeansweb.com/meet-the-team"
+         target="_blank">
+        &#127760; View Full Team on HotBeansWeb.com &rarr;
+      </a>
+    </div>
+
+    <!-- TEAM MEMBER SEARCH -->
+    <div class="team-search-box">
+      <label>&#128269; Filter Team:</label>
+      <input type="text" id="teamKeyword" placeholder="Search by name or skill..."
+        oninput="filterTrainees()">
+      <select id="teamSpecialism" onchange="filterTrainees()">
+        <option value="">All Specialisms</option>
+        <option value="frontend">Front-End</option>
+        <option value="design">UI/UX Design</option>
+        <option value="qa">QA Testing</option>
+        <option value="fullstack">Full Stack</option>
+      </select>
+      <span id="teamResultsCount">Showing 3 trainees</span>
+    </div>
+
+    <!-- SECTION LABEL -->
+    <div class="section-label">&#128101; Current Trainees</div>
+
+    <!-- TRAINEE CARDS LIST -->
+    <div class="trainees-list" id="traineesList">
+
+      <!-- ══ TRAINEE 1 — WALID ══ -->
+      <div class="trainee-card" data-name="walid" data-spec="frontend">
+        <div class="trainee-photo-side">
+          <img class="trainee-photo" src="file:///C|/Users/Daqua/OneDrive/Documents/Unnamed Site 2/Webdev 4 walid.jpeg" alt="Walid">
+          <h2>Walid</h2>
+          <div class="trainee-role">Junior Front-End Developer</div>
+          <div class="trainee-level-badge">&#127381; Beginner — Progressing Fast</div>
+          <div class="trainee-socials">
+            <a class="social-link"
+               href="https://www.hotbeansweb.com/meet-the-team"
+               target="_blank">&#127760; HBW Profile</a>
+            <a class="social-link"
+               href="https://github.com"
+               target="_blank">&#128187; GitHub</a>
+            <a class="social-link"
+               href="https://linkedin.com"
+               target="_blank">&#128101; LinkedIn</a>
+          </div>
+        </div>
+        <div class="trainee-info-side">
+          <div class="trainee-tags">
+            <span class="tag tag-spec">Front-End</span>
+            <span class="tag tag-loc">&#128205; London</span>
+            <span class="tag tag-joined">&#128197; Joined 2024</span>
+          </div>
+
+          <div class="info-section-title">About Walid</div>
+          <p>Walid is an enthusiastic beginner trainee web developer who has recently started
+          his journey into web development and is progressing quickly. He has learnt the basics
+          of HTML and CSS and is beginning to explore JavaScript. He is eager to learn, often
+          practising outside of lessons and has already created simple static web pages.</p>
+          <p>Walid brings a positive energy to the team and is never afraid to ask questions.
+          His passion for the subject makes him a valuable member of the trainee cohort and
+          his rate of progress has impressed the senior team.</p>
+
+          <div class="info-section-title">Technical Skills</div>
+          <div class="skills-list">
+            <div class="skill-row">
+              <span class="skill-name">HTML</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:70%"></div></div>
+              <span class="skill-pct">70%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">CSS</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:60%"></div></div>
+              <span class="skill-pct">60%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">JavaScript</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:25%"></div></div>
+              <span class="skill-pct">25%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">Responsive</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:45%"></div></div>
+              <span class="skill-pct">45%</span>
+            </div>
+          </div>
+
+          <div class="info-section-title">Strengths &amp; Areas to Improve</div>
+          <div class="sw-grid">
+            <div class="sw-box strength">
+              <h5>&#9733; Strengths</h5>
+              <ul>
+                <li>Enthusiastic and eager to learn</li>
+                <li>Practises consistently outside lessons</li>
+                <li>Quick to pick up new concepts</li>
+                <li>Positive team attitude</li>
+              </ul>
+            </div>
+            <div class="sw-box weakness">
+              <h5>&#9888; Areas to Improve</h5>
+              <ul>
+                <li>Limited experience with complex tasks</li>
+                <li>Relies heavily on tutorials</li>
+                <li>Needs to improve debugging skills</li>
+                <li>JavaScript fundamentals still developing</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="info-section-title">Goals &amp; Ambitions</div>
+          <ul class="goals-list">
+            <li>Complete the freeCodeCamp JavaScript certification</li>
+            <li>Build and deploy a personal portfolio website</li>
+            <li>Progress to a mid-level front-end developer role within 2 years</li>
+          </ul>
+
+          <a class="hbw-link"
+             href="https://www.hotbeansweb.com/meet-the-team"
+             target="_blank">
+            &#127760; View on Hot Beans Web &rarr;
+          </a>
+        </div>
+      </div>
+
+      <!-- ══ TRAINEE 2 — JEFF ══ -->
+      <div class="trainee-card" data-name="jeff" data-spec="design">
+        <div class="trainee-photo-side">
+          <img class="trainee-photo" src="file:///C|/Users/Daqua/OneDrive/Documents/Unnamed Site 2/webdev 5 Israel.jpg" alt="Jeff">
+          <h2>Jeff</h2>
+          <div class="trainee-role">Trainee UI/UX Developer</div>
+          <div class="trainee-level-badge">&#128200; Intermediate — Creative Focus</div>
+          <div class="trainee-socials">
+            <a class="social-link"
+               href="https://www.hotbeansweb.com/meet-the-team"
+               target="_blank">&#127760; HBW Profile</a>
+            <a class="social-link"
+               href="https://github.com"
+               target="_blank">&#128187; GitHub</a>
+            <a class="social-link"
+               href="https://linkedin.com"
+               target="_blank">&#128101; LinkedIn</a>
+          </div>
+        </div>
+        <div class="trainee-info-side">
+          <div class="trainee-tags">
+            <span class="tag tag-spec">UI/UX Design</span>
+            <span class="tag tag-loc">&#128205; Manchester</span>
+            <span class="tag tag-joined">&#128197; Joined 2023</span>
+          </div>
+
+          <div class="info-section-title">About Jeff</div>
+          <p>Jeff is a trainee web developer with a strong focus on creative design and user
+          interface development. He has a natural eye for aesthetics and enjoys making websites
+          visually appealing and engaging for users. Jeff has good skills in CSS animations,
+          responsive design and layout experimentation.</p>
+          <p>He often goes above and beyond to produce visually polished work and is not afraid
+          to experiment with new ideas. His designs regularly receive positive feedback from
+          both the team and clients, and his enthusiasm for visual storytelling sets him apart.</p>
+
+          <div class="info-section-title">Technical Skills</div>
+          <div class="skills-list">
+            <div class="skill-row">
+              <span class="skill-name">HTML</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:80%"></div></div>
+              <span class="skill-pct">80%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">CSS</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:85%"></div></div>
+              <span class="skill-pct">85%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">JavaScript</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:40%"></div></div>
+              <span class="skill-pct">40%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">Figma/Design</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:75%"></div></div>
+              <span class="skill-pct">75%</span>
+            </div>
+          </div>
+
+          <div class="info-section-title">Strengths &amp; Areas to Improve</div>
+          <div class="sw-grid">
+            <div class="sw-box strength">
+              <h5>&#9733; Strengths</h5>
+              <ul>
+                <li>Outstanding visual design skills</li>
+                <li>Strong CSS and animation ability</li>
+                <li>Creative and experimental approach</li>
+                <li>Great instinct for user experience</li>
+              </ul>
+            </div>
+            <div class="sw-box weakness">
+              <h5>&#9888; Areas to Improve</h5>
+              <ul>
+                <li>Sometimes prioritises design over function</li>
+                <li>JavaScript skills need development</li>
+                <li>Can leave features incomplete</li>
+                <li>Needs to focus more on accessibility</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="info-section-title">Goals &amp; Ambitions</div>
+          <ul class="goals-list">
+            <li>Complete a Figma UI design certification</li>
+            <li>Improve JavaScript skills to support interactive design elements</li>
+            <li>Lead the design on a major client project within 12 months</li>
+          </ul>
+
+          <a class="hbw-link"
+             href="https://www.hotbeansweb.com/meet-the-team"
+             target="_blank">
+            &#127760; View on Hot Beans Web &rarr;
+          </a>
+        </div>
+      </div>
+
+      <!-- ══ TRAINEE 3 — STEVEN ══ -->
+      <div class="trainee-card" data-name="steven" data-spec="qa">
+        <div class="trainee-photo-side">
+          <img class="trainee-photo" src="file:///C|/Users/Daqua/OneDrive/Documents/Unnamed Site 2/web dev 6 steven.jpg" alt="Steven">
+          <h2>Steven</h2>
+          <div class="trainee-role">Trainee QA &amp; Test Developer</div>
+          <div class="trainee-level-badge">&#128203; Intermediate — Detail Oriented</div>
+          <div class="trainee-socials">
+            <a class="social-link"
+               href="https://www.hotbeansweb.com/meet-the-team"
+               target="_blank">&#127760; HBW Profile</a>
+            <a class="social-link"
+               href="https://github.com"
+               target="_blank">&#128187; GitHub</a>
+            <a class="social-link"
+               href="https://linkedin.com"
+               target="_blank">&#128101; LinkedIn</a>
+          </div>
+        </div>
+        <div class="trainee-info-side">
+          <div class="trainee-tags">
+            <span class="tag tag-spec">QA Testing</span>
+            <span class="tag tag-loc">&#128205; Birmingham</span>
+            <span class="tag tag-joined">&#128197; Joined 2023</span>
+          </div>
+
+          <div class="info-section-title">About Steven</div>
+          <p>Steven is a trainee developer who excels in testing and quality assurance. He takes
+          a meticulous and careful approach to development, ensuring that his code works correctly
+          before moving on. He has a very solid understanding of HTML, CSS and JavaScript and
+          regularly checks his work across different browsers and devices.</p>
+          <p>Steven's methodical nature means fewer bugs make it through to the final product,
+          and his thorough approach to documentation and testing has been praised by the senior
+          development team. He is someone the team trusts to catch issues others might miss.</p>
+
+          <div class="info-section-title">Technical Skills</div>
+          <div class="skills-list">
+            <div class="skill-row">
+              <span class="skill-name">HTML</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:82%"></div></div>
+              <span class="skill-pct">82%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">CSS</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:78%"></div></div>
+              <span class="skill-pct">78%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">JavaScript</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:65%"></div></div>
+              <span class="skill-pct">65%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">QA Testing</span>
+              <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:88%"></div></div>
+              <span class="skill-pct">88%</span>
+            </div>
+          </div>
+
+          <div class="info-section-title">Strengths &amp; Areas to Improve</div>
+          <div class="sw-grid">
+            <div class="sw-box strength">
+              <h5>&#9733; Strengths</h5>
+              <ul>
+                <li>Exceptional attention to detail</li>
+                <li>Cross-browser and device testing</li>
+                <li>Strong HTML, CSS and JS knowledge</li>
+                <li>Produces very few errors in final work</li>
+              </ul>
+            </div>
+            <div class="sw-box weakness">
+              <h5>&#9888; Areas to Improve</h5>
+              <ul>
+                <li>Can work slower than team members</li>
+                <li>Lacks confidence starting new tasks</li>
+                <li>Needs to improve speed under pressure</li>
+                <li>Sometimes over-checks completed work</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="info-section-title">Goals &amp; Ambitions</div>
+          <ul class="goals-list">
+            <li>Gain an ISTQB Foundation Level testing certification</li>
+            <li>Improve speed and confidence when starting new projects</li>
+            <li>Move into a dedicated QA Engineer role within 18 months</li>
+          </ul>
+
+          <a class="hbw-link"
+             href="https://www.hotbeansweb.com/meet-the-team"
+             target="_blank">
+            &#127760; View on Hot Beans Web &rarr;
+          </a>
+        </div>
+      </div>
+
+    </div><!-- /trainees-list -->
+
+    <!-- NO RESULTS -->
+    <div class="no-results" id="noTraineeResults">
+      <div class="big">&#128269;</div>
+      <p>No trainees found matching your search. Try a different name or specialism.</p>
+    </div>
+
+    <!-- ABOUT THE PROGRAMME -->
+    <div class="section-label" style="margin-top:10px;">&#127891; About the Programme</div>
+    <div class="prog-card">
+      <div class="prog-title"><span class="pbadge">&#9432;</span> Our Trainee Programme</div>
+      <p>At Hot Beans Web we believe in growing talent from within. Our trainee developer
+      programme gives junior developers the opportunity to work on real client projects from
+      day one, under the guidance of senior developers and designers. Trainees receive
+      structured learning, mentorship and regular feedback to help them progress as quickly
+      as possible.</p>
+      <p>We are always looking for passionate, motivated individuals to join our next cohort.
+      If you think you have what it takes, apply using the link below.</p>
+      <div class="prog-grid">
+        <div class="prog-item">
+          <div class="picon">&#127919;</div>
+          <h4>Real Projects</h4>
+          <p>Work on live client websites from your very first week on the programme.</p>
+        </div>
+        <div class="prog-item">
+          <div class="picon">&#128101;</div>
+          <h4>Mentorship</h4>
+          <p>One-to-one mentoring from experienced senior developers and designers.</p>
+        </div>
+        <div class="prog-item">
+          <div class="picon">&#128200;</div>
+          <h4>Career Growth</h4>
+          <p>A clear pathway from trainee to junior to mid-level and beyond.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE LINKS -->
+    <div class="links-section">
+      <h2>Pages</h2>
+      <div class="links-grid">
+        <a href="file:///C|/Users/Daqua/OneDrive/Documents/Unnamed Site 2/Non Optimised website.html">Profile of Company Image</a>
+        <a href="file:///C|/Users/Daqua/OneDrive/Documents/Unnamed Site 2/Job Specifications and required requirements.html">Job Specifications &amp; Requirements</a>
+        <a href="file:///C|/Users/Daqua/OneDrive/Documents/Unnamed Site 2/Online Application form.html">Online Application Form</a>
+        <a href="file:///C|/Users/Daqua/OneDrive/Documents/Unnamed Site 2/About us.html">About Us</a>
+        <a href="file:///C|/Users/Daqua/OneDrive/Documents/Unnamed Site 2/Contact us.html">Contact Us</a>
+        <a href="file:///C|/Users/Daqua/OneDrive/Documents/Unnamed Site 2/Services and news.html">Services &amp; News</a>
+        <a href="file:///C|/Users/Daqua/OneDrive/Documents/Unnamed Site 2/Privacy and policy.html">Privacy Policy</a>
+        <a href="https://www.hotbeansweb.com/meet-the-team" target="_blank">&#127760; HBW Meet the Team</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ── TRAINEE FILTER ──
+    function filterTrainees() {
+      const keyword = document.getElementById('teamKeyword').value.toLowerCase().trim();
+      const spec    = document.getElementById('teamSpecialism').value;
+      const cards   = document.querySelectorAll('.trainee-card');
+      let visible   = 0;
+
+      cards.forEach(card => {
+        const name     = card.dataset.name;
+        const cardSpec = card.dataset.spec;
+        const matchKw  = !keyword || name.includes(keyword) ||
+                         card.innerText.toLowerCase().includes(keyword);
+        const matchSp  = !spec || cardSpec === spec;
+
+        if (matchKw && matchSp) {
+          card.style.display = '';
+          visible++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.getElementById('teamResultsCount').textContent =
+        'Showing ' + visible + ' trainee' + (visible !== 1 ? 's' : '');
+      document.getElementById('noTraineeResults').style.display =
+        visible === 0 ? 'block' : 'none';
+      document.getElementById('traineesList').style.display =
+        visible === 0 ? 'none' : '';
+    }
+
+    // ── SITE SEARCH ──
+    const pages = [
+      { title: 'Profile of Company Image',                   url: 'Non Optimised website.html' },
+      { title: 'Profile of Existing Trainee Web Developers', url: 'Profile of existing trainee web developers.html' },
+      { title: 'Job Specifications and Requirements',         url: 'Job Specifications and required requirements.html' },
+      { title: 'Online Application Form',                     url: 'Online Application form.html' },
+      { title: 'Links to Web Dev Courses',                    url: 'Links to web development courses.html' },
+      { title: 'About Us',                                    url: 'About us.html' },
+      { title: 'Contact Us',                                  url: 'Contact us.html' },
+      { title: 'Services and News',                           url: 'Services and news.html' },
+      { title: 'Privacy and Policy',                          url: 'Privacy and policy.html' },
+      { title: 'Hot Beans Web — Meet the Team',               url: 'https://www.hotbeansweb.com/meet-the-team' },
+    ];
+
+    function runSiteSearch(query) {
+      const q = query.trim().toLowerCase();
+      const resultsEl = document.getElementById('siteSearchResults');
+      if (!q) { resultsEl.classList.remove('active'); return; }
+      const matches = pages.filter(p => p.title.toLowerCase().includes(q));
+      resultsEl.innerHTML = matches.length === 0
+        ? '<div class="search-result-item">No results found.</div>'
+        : matches.map(p =>
+            '<div class="search-result-item" onclick="window.location.href=\'' + p.url + '\'">' + p.title + '</div>'
+          ).join('');
+      resultsEl.classList.add('active');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-wrapper') && !e.target.closest('.search-bar button')) {
+        document.getElementById('siteSearchResults').classList.remove('active');
+      }
+    });
+  </script>
+
+</body>
+</html>

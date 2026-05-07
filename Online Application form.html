@@ -1,0 +1,691 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Online Application Form</title>'
+	
+	<!-- SEARCH BAR -->
+<div class="search-bar">
+  <div class="search-wrapper">
+    <input type="text" id="siteSearch" placeholder="Search this site..."
+      oninput="runSearch(this.value)"
+      onkeydown="if(event.key==='Enter') runSearch(this.value)">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+  <button onclick="runSearch(document.getElementById('siteSearch').value)">Search</button>
+</div>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <img src="Application form.jpg" class="hero-img" alt="Application Form">
+    <div class="hero-text">
+      <h1>Online Application<br>Form</h1>
+      <p>If you are passionate about web development and ready to begin your professional career,
+      we encourage you to apply for our junior web developer role. Please complete all required
+      fields accurately.</p>
+    </div>
+  </div>
+
+  <!-- FORM CARD -->
+  <div class="card">
+    <div class="card-title"><span>✎</span> Your Details</div>
+
+    <form id="appForm" onsubmit="return handleSubmit(event)" novalidate>
+      <div class="form-grid">
+
+        <!-- Name -->
+        <div class="field">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="name" placeholder="e.g. Jane Smith">
+          <div class="error-msg" id="nameError">Please enter your full name.</div>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+          <label>Email Address <span class="req">*</span></label>
+          <input type="email" id="email" placeholder="e.g. jane@example.com">
+          <div class="error-msg" id="emailError">Please enter a valid email address.</div>
+        </div>
+
+        <!-- Phone -->
+        <div class="field">
+          <label>Phone Number <span class="req">*</span></label>
+          <input type="tel" id="phone" placeholder="e.g. 07700 900000">
+          <div class="error-msg" id="phoneError">Please enter a valid phone number.</div>
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="field">
+          <label>Date of Birth <span class="req">*</span></label>
+          <input type="date" id="dob">
+          <div class="error-msg" id="dobError">Please enter a valid date of birth.</div>
+        </div>
+
+        <!-- Address -->
+        <div class="field field-full">
+          <label>Address <span class="req">*</span></label>
+          <input type="text" id="address" placeholder="e.g. 12 High Street, London">
+          <div class="error-msg" id="addressError">Please enter your address.</div>
+        </div>
+
+        <!-- Gender -->
+        <div class="field">
+          <label>Gender <span class="req">*</span></label>
+          <select id="gender">
+            <option value="">-- Select --</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Non-binary</option>
+            <option>Prefer not to say</option>
+          </select>
+          <div class="error-msg" id="genderError">Please select a gender.</div>
+        </div>
+
+      </div>
+
+      <!-- CV UPLOAD -->
+      <div class="cv-section">
+        <div class="cv-upload-area">
+          <label class="cv-upload-label" for="cvInput">
+            &#8679; Attach CV (PDF only)
+          </label>
+          <input type="file" id="cvInput" accept=".pdf" onchange="handleCV(this)">
+        </div>
+        <div class="cv-info">
+          <div class="cv-filename" id="cvFilename">No file chosen — PDF only</div>
+          <div class="error-msg" id="cvError">Please attach your CV as a PDF file.</div>
+        </div>
+      </div>
+
+      <div class="submit-row">
+        <button type="submit" class="btn-submit">Submit Application &rarr;</button>
+      </div>
+    </form>
+
+    <!-- SUCCESS MESSAGE -->
+    <div id="successMessage">
+      ✅ Your application has been submitted successfully! We will be in touch soon.
+    </div>
+  </div>
+
+  <!-- CONFIRMATION POPUP -->
+  <div id="confirmOverlay">
+    <div id="confirmBox">
+      <div class="icon">📋</div>
+      <h3>Submit Application?</h3>
+      <p>Are you sure you want to submit your application form? Please check all your details are correct before confirming.</p>
+      <div class="confirm-btns">
+        <button class="btn-yes" onclick="confirmYes()">Yes, Submit</button>
+        <button class="btn-no" onclick="confirmNo()">Go Back</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE LINKS -->
+  <div class="links-section">
+    <h2>Pages</h2>
+    <div class="links-grid">
+      <a href="Profile of Company image.html">Profile of Company Image</a>
+      <a href="Links to web development courses.html">Links to Web Dev Courses</a>
+      <a href="Job Specifications and required requirements.html">Job Specifications &amp; Requirements</a>
+      <a href="Online Application form.html">Online Application Form</a>
+    </div>
+  </div>
+
+</div>
+	
+	
+	
+	
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal:       #08CAB9;
+    --teal-dark:  #05a396;
+    --teal-deep:  #037a72;
+    --white:      #ffffff;
+    --off-white:  #f0fdfc;
+    --text-dark:  #0d2b29;
+    --text-mid:   #2e6e68;
+    --error:      #e03c3c;
+    --success:    #0f9e6e;
+    --border:     #b2ebe6;
+    --card-bg:    rgba(255,255,255,0.92);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--teal);
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(255,255,255,0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(5,100,90,0.25) 0%, transparent 50%);
+    min-height: 100vh;
+    color: var(--text-dark);
+  }
+
+  /* SEARCH BAR */
+  .search-bar {
+    background: var(--teal-deep);
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  .search-bar input {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: none;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    width: 240px;
+    outline: none;
+    background: rgba(255,255,255,0.15);
+    color: white;
+  }
+  .search-bar input::placeholder { color: rgba(255,255,255,0.6); }
+  .search-bar button {
+    background: white;
+    color: var(--teal-deep);
+    border: none;
+    padding: 7px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+  }
+  .search-results {
+    display: none;
+    position: absolute;
+    top: 44px;
+    right: 0;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    width: 300px;
+    z-index: 999;
+    overflow: hidden;
+  }
+  .search-results.active { display: block; }
+  .search-result-item {
+    padding: 12px 18px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--text-dark);
+  }
+  .search-result-item:hover { background: var(--off-white); }
+  .search-result-item:last-child { border-bottom: none; }
+  .search-wrapper { position: relative; }
+
+  /* PAGE WRAPPER */
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 50px 24px 60px;
+  }
+
+  /* HERO */
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 44px;
+  }
+  .hero-img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 4px solid rgba(255,255,255,0.5);
+    flex-shrink: 0;
+  }
+  .hero-text h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 800;
+    color: white;
+    line-height: 1.1;
+    letter-spacing: -1px;
+  }
+  .hero-text p {
+    margin-top: 12px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 40px 44px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    border: 1px solid rgba(255,255,255,0.6);
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card-title span {
+    background: var(--teal);
+    color: white;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+  }
+
+  /* FORM GRID */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 28px;
+  }
+  .field-full { grid-column: 1 / -1; }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-mid);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .field label .req { color: var(--error); margin-left: 2px; }
+
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="tel"],
+  .field input[type="date"],
+  .field select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text-dark);
+    background: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  .field input:focus,
+  .field select:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(8,202,185,0.15);
+  }
+  .field input.invalid { border-color: var(--error); }
+
+  .error-msg {
+    display: none;
+    color: var(--error);
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 500;
+  }
+  .error-msg.show { display: block; }
+
+  /* CV UPLOAD */
+  .cv-section {
+    margin-top: 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .cv-upload-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 22px;
+    background: var(--teal);
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.2s;
+  }
+  .cv-upload-label:hover { background: var(--teal-dark); }
+  #cvInput { display: none; }
+  .cv-filename {
+    font-size: 13px;
+    color: var(--text-mid);
+    padding: 10px 14px;
+    background: var(--off-white);
+    border-radius: 8px;
+    border: 2px dashed var(--border);
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    min-width: 200px;
+  }
+  .cv-filename.attached {
+    border-color: var(--success);
+    background: #edfaf5;
+    color: var(--success);
+    font-weight: 500;
+  }
+
+  /* SUBMIT BUTTON */
+  .submit-row {
+    margin-top: 34px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .btn-submit {
+    background: var(--teal-deep);
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    font-size: 16px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-submit:hover { background: var(--teal-dark); transform: translateY(-1px); }
+
+  /* CONFIRMATION POPUP */
+  #confirmOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  #confirmOverlay.show { display: flex; }
+  #confirmBox {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 44px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+    animation: popIn 0.25s ease;
+  }
+  @keyframes popIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+  }
+  #confirmBox .icon { font-size: 42px; margin-bottom: 16px; }
+  #confirmBox h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+  }
+  #confirmBox p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .confirm-btns { display: flex; gap: 14px; justify-content: center; }
+  .btn-yes {
+    background: var(--teal-deep);
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-yes:hover { background: var(--teal-dark); }
+  .btn-no {
+    background: #f0f0f0;
+    color: #555;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-no:hover { background: #e0e0e0; }
+
+  /* SUCCESS MESSAGE */
+  #successMessage {
+    display: none;
+    background: #edfaf5;
+    border: 2px solid var(--success);
+    border-radius: 14px;
+    padding: 20px 28px;
+    margin-top: 24px;
+    text-align: center;
+    color: var(--success);
+    font-weight: 600;
+    font-size: 15px;
+  }
+  #successMessage.show { display: block; }
+
+  /* LINKS */
+  .links-section { margin-top: 40px; }
+  .links-section h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+  .links-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+  .links-grid a {
+    background: rgba(255,255,255,0.18);
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: background 0.2s;
+  }
+  .links-grid a:hover { background: rgba(255,255,255,0.3); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .card { padding: 28px 22px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .field-full { grid-column: 1; }
+    .hero { flex-direction: column; text-align: center; }
+    .search-bar { padding: 10px 16px; }
+    .search-bar input { width: 160px; }
+  }
+  @media (min-width: 601px) and (max-width: 768px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .field-full { grid-column: 1; }
+  }
+</style>
+</head>
+
+<body>
+	<script>
+  // CV HANDLING
+  let cvAttached = false;
+
+  function handleCV(input) {
+    const file = input.files[0];
+    const filenameEl = document.getElementById('cvFilename');
+    const cvError    = document.getElementById('cvError');
+
+    if (!file) {
+      filenameEl.textContent = 'No file chosen — PDF only';
+      filenameEl.classList.remove('attached');
+      cvAttached = false;
+      return;
+    }
+
+    if (file.type !== 'application/pdf') {
+      filenameEl.textContent = 'Invalid file — PDFs only please.';
+      filenameEl.classList.remove('attached');
+      cvError.textContent = 'Your CV must be a PDF file. Please re-attach.';
+      cvError.classList.add('show');
+      cvAttached = false;
+      input.value = '';
+      return;
+    }
+
+    filenameEl.textContent = '📎 ' + file.name;
+    filenameEl.classList.add('attached');
+    cvError.classList.remove('show');
+    cvAttached = true;
+  }
+
+  // VALIDATION HELPERS
+  function showError(id, msg) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.classList.add('show');
+  }
+  function hideError(id) {
+    document.getElementById(id).classList.remove('show');
+  }
+  function markInvalid(id) {
+    document.getElementById(id).classList.add('invalid');
+  }
+  function markValid(id) {
+    document.getElementById(id).classList.remove('invalid');
+  }
+
+  // FORM SUBMIT
+  function handleSubmit(event) {
+    event.preventDefault();
+    let valid = true;
+
+    // Name
+    const name = document.getElementById('name').value.trim();
+    if (name === '') {
+      showError('nameError', 'Please enter your full name.');
+      markInvalid('name'); valid = false;
+    } else if (name.split(' ').length < 2) {
+      showError('nameError', 'Please enter both first and last name.');
+      markInvalid('name'); valid = false;
+    } else { hideError('nameError'); markValid('name'); }
+
+    // Email
+    const email = document.getElementById('email').value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('emailError', 'Please enter a valid email address.');
+      markInvalid('email'); valid = false;
+    } else { hideError('emailError'); markValid('email'); }
+
+    // Phone
+    const phone = document.getElementById('phone').value.trim();
+    if (!/^[\d\s\+\-\(\)]{7,15}$/.test(phone)) {
+      showError('phoneError', 'Please enter a valid phone number.');
+      markInvalid('phone'); valid = false;
+    } else { hideError('phoneError'); markValid('phone'); }
+
+    // Date of Birth
+    const dob = document.getElementById('dob').value;
+    if (!dob) {
+      showError('dobError', 'Please enter your date of birth.');
+      markInvalid('dob'); valid = false;
+    } else {
+      const age = Math.floor((new Date() - new Date(dob)) / (365.25 * 24 * 60 * 60 * 1000));
+      if (age < 16 || age > 100) {
+        showError('dobError', 'You must be at least 16 years old to apply.');
+        markInvalid('dob'); valid = false;
+      } else { hideError('dobError'); markValid('dob'); }
+    }
+
+    // Address
+    const address = document.getElementById('address').value.trim();
+    if (address.length < 5) {
+      showError('addressError', 'Please enter a valid address.');
+      markInvalid('address'); valid = false;
+    } else { hideError('addressError'); markValid('address'); }
+
+    // Gender
+    const gender = document.getElementById('gender').value;
+    if (!gender) {
+      showError('genderError', 'Please select a gender option.');
+      markInvalid('gender'); valid = false;
+    } else { hideError('genderError'); markValid('gender'); }
+
+    // CV
+    if (!cvAttached) {
+      showError('cvError', 'Please attach your CV as a PDF file.');
+      valid = false;
+    } else { hideError('cvError'); }
+
+    // Show confirmation popup if all valid
+    if (valid) {
+      document.getElementById('confirmOverlay').classList.add('show');
+    }
+  }
+
+  function confirmYes() {
+    document.getElementById('confirmOverlay').classList.remove('show');
+    document.getElementById('appForm').reset();
+    document.getElementById('cvFilename').textContent = 'No file chosen — PDF only';
+    document.getElementById('cvFilename').classList.remove('attached');
+    cvAttached = false;
+    const success = document.getElementById('successMessage');
+    success.classList.add('show');
+    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function confirmNo() {
+    document.getElementById('confirmOverlay').classList.remove('show');
+  }
+
+  // SEARCH
+  const pages = [
+    { title: 'Profile of Company Image',           url: 'Profile of Company image.html' },
+    { title: 'Links to Web Dev Courses',           url: 'Links to web development courses.html' },
+    { title: 'Job Specifications & Requirements',  url: 'Job Specifications and required requirements.html' },
+    { title: 'Online Application Form',            url: 'Online Application form.html' },
+  ];
+
+  function runSearch(query) {
+    const q = query.trim().toLowerCase();
+    const resultsEl = document.getElementById('searchResults');
+    if (!q) { resultsEl.classList.remove('active'); return; }
+    const matches = pages.filter(p => p.title.toLowerCase().includes(q));
+    resultsEl.innerHTML = matches.length === 0
+      ? '<div class="search-result-item">No results found.</div>'
+      : matches.map(p => `<div class="search-result-item" onclick="window.location.href='${p.url}'">${p.title}</div>`).join('');
+    resultsEl.classList.add('active');
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.search-wrapper') && !e.target.closest('.search-bar button')) {
+      document.getElementById('searchResults').classList.remove('active');
+    }
+  });
+</script>
+</body>
+</html>
+

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy and Policy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:      #08CAB9;
+      --teal-dark: #05a396;
+      --teal-deep: #037a72;
+      --off-white: #f0fdfc;
+      --text-dark: #0d2b29;
+      --text-mid:  #2e6e68;
+      --border:    #b2ebe6;
+      --card-bg:   rgba(255,255,255,0.92);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--teal);
+      background-image:
+        radial-gradient(ellipse at 10% 20%, rgba(255,255,255,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(5,100,90,0.25) 0%, transparent 50%);
+      min-height: 100vh;
+      color: var(--text-dark);
+    }
+
+    /* ── SEARCH BAR ── */
+    .search-bar {
+      background: var(--teal-deep);
+      padding: 10px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .search-bar input {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: none;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      width: 240px;
+      outline: none;
+      background: rgba(255,255,255,0.15);
+      color: white;
+    }
+    .search-bar input::placeholder { color: rgba(255,255,255,0.6); }
+    .search-bar button {
+      background: white;
+      color: var(--teal-deep);
+      border: none;
+      padding: 7px 18px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+    }
+    .search-wrapper { position: relative; }
+    .search-results {
+      display: none;
+      position: absolute;
+      top: 44px;
+      right: 0;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      width: 300px;
+      z-index: 999;
+      overflow: hidden;
+    }
+    .search-results.active { display: block; }
+    .search-result-item {
+      padding: 12px 18px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--text-dark);
+    }
+    .search-result-item:hover { background: var(--off-white); }
+    .search-result-item:last-child { border-bottom: none; }
+
+    /* ── PAGE ── */
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 50px 24px 60px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 6vw, 54px);
+      font-weight: 800;
+      color: white;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+    }
+    .hero h1 span {
+      color: var(--teal-deep);
+      background: white;
+      padding: 0 10px;
+      border-radius: 6px;
+    }
+    .hero p {
+      margin-top: 14px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+    }
+
+    /* ── QUICK LINKS (top of page) ── */
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 36px;
+    }
+    .quick-link {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.35);
+      transition: background 0.2s;
+    }
+    .quick-link:hover { background: rgba(255,255,255,0.35); }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 36px 44px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      border: 1px solid rgba(255,255,255,0.6);
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-title .badge {
+      background: var(--teal);
+      color: white;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .card p {
+      font-size: 15px;
+      color: #444;
+      line-height: 1.85;
+    }
+
+    /* ── POLICY POINTS ── */
+    .policy-points {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 4px;
+    }
+    .policy-point {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--off-white);
+      border-radius: 12px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+    }
+    .policy-point .icon {
+      font-size: 22px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .policy-point h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .policy-point p {
+      font-size: 13px !important;
+      color: var(--text-mid) !important;
+      line-height: 1.6 !important;
+    }
+
+    /* ── YOUR RIGHTS ── */
+    .rights-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 4px;
+    }
+    .right-item {
+      background: var(--off-white);
+      border-radius: 12px;
+      padding: 18px 20px;
+      border-top: 3px solid var(--teal);
+    }
+    .right-item h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 5px;
+    }
+    .right-item p {
+      font-size: 13px !important;
+      color: var(--text-mid) !important;
+      line-height: 1.5 !important;
+    }
+
+    /* ── LAST UPDATED BADGE ── */
+    .updated-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 12px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-top: 10px;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    /* ── PAGE LINKS ── */
+    .links-section { margin-top: 10px; }
+    .links-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+    .links-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .links-grid a {
+      background: rgba(255,255,255,0.18);
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: background 0.2s;
+    }
+    .links-grid a:hover { background: rgba(255,255,255,0.3); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .card { padding: 28px 22px; }
+      .rights-grid { grid-template-columns: 1fr; }
+      .search-bar { padding: 10px 16px; }
+      .search-bar input { width: 150px; }
+    }
+    @media (min-width: 601px) and (max-width: 768px) {
+      .rights-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar">
+    <div class="search-wrapper">
+      <input type="text" id="siteSearch" placeholder="Search this site..."
+        oninput="runSearch(this.value)"
+        onkeydown="if(event.key==='Enter') runSearch(this.value)">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+    <button onclick="runSearch(document.getElementById('siteSearch').value)">Search</button>
+  </div>
+
+  <div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>Privacy &amp; <span>Policy</span></h1>
+      <p>How we collect, use and protect your personal information.</p>
+      <span class="updated-badge">&#128197; Last updated: May 2026</span>
+    </div>
+
+    <!-- QUICK JUMP LINKS -->
+    <div class="quick-links">
+      <a class="quick-link" href="#data">Data Collection</a>
+      <a class="quick-link" href="#sharing">Data Sharing</a>
+      <a class="quick-link" href="#security">Security</a>
+      <a class="quick-link" href="#rights">Your Rights</a>
+    </div>
+
+    <!-- OVERVIEW CARD -->
+    <div class="card">
+      <div class="card-title"><span class="badge">&#128274;</span> Our Commitment</div>
+      <p>We are committed to protecting the privacy and personal information of all users who visit
+      our website. Any information collected through forms, such as names, email addresses, or other
+      contact details, will only be used for the purpose that it was intended for. By using this
+      website, users agree to the collection and use of their information in accordance with this
+      privacy policy.</p>
+    </div>
+
+    <!-- DATA COLLECTION & USE -->
+    <div class="card" id="data">
+      <div class="card-title"><span class="badge">&#128196;</span> Data Collection &amp; Use</div>
+      <div class="policy-points">
+        <div class="policy-point">
+          <div class="icon">&#128221;</div>
+          <div>
+            <h4>What We Collect</h4>
+            <p>We collect information you provide directly to us, such as your name, email address,
+            phone number and any other details submitted through our online forms.</p>
+          </div>
+        </div>
+        <div class="policy-point">
+          <div class="icon">&#127919;</div>
+          <div>
+            <h4>How We Use It</h4>
+            <p>Information is used solely for the purpose it was submitted for — such as responding
+            to applications or enquiries. We do not use your data for marketing without your
+            explicit consent.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATA SHARING -->
+    <div class="card" id="sharing">
+      <div class="card-title"><span class="badge">&#128257;</span> Data Sharing</div>
+      <div class="policy-points">
+        <div class="policy-point">
+          <div class="icon">&#128683;</div>
+          <div>
+            <h4>We Do Not Sell Your Data</h4>
+            <p>We do not share, sell or distribute personal data to third parties without the
+            user's consent, unless required by law.</p>
+          </div>
+        </div>
+        <div class="policy-point">
+          <div class="icon">&#9878;</div>
+          <div>
+            <h4>Legal Requirements</h4>
+            <p>In rare cases we may be required to disclose information to comply with legal
+            obligations or protect the rights and safety of our organisation and users.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="card" id="security">
+      <div class="card-title"><span class="badge">&#128737;</span> Data Security</div>
+      <div class="policy-points">
+        <div class="policy-point">
+          <div class="icon">&#128272;</div>
+          <div>
+            <h4>Secure Storage</h4>
+            <p>All data is stored securely and only accessed by authorised personnel. We take
+            appropriate technical and organisational measures to protect your information.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- YOUR RIGHTS -->
+    <div class="card" id="rights">
+      <div class="card-title"><span class="badge">&#9878;</span> Your Rights</div>
+      <div class="rights-grid">
+        <div class="right-item">
+          <h4>&#128269; Right to Access</h4>
+          <p>You have the right to request access to any personal data we hold about you at any time.</p>
+        </div>
+        <div class="right-item">
+          <h4>&#9999; Right to Correct</h4>
+          <p>You can request corrections if any information we hold about you is inaccurate or incomplete.</p>
+        </div>
+        <div class="right-item">
+          <h4>&#128465; Right to Delete</h4>
+          <p>Users may request that their data is deleted where appropriate and where no legal obligation requires us to retain it.</p>
+        </div>
+        <div class="right-item">
+          <h4>&#128233; Contact Us</h4>
+          <p>To exercise any of your rights, please get in touch with us via the Contact Us page.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE LINKS -->
+    <div class="links-section">
+      <h2>Pages</h2>
+      <div class="links-grid">
+        <a href="Privacy and policy.html">Privacy and Policy</a>
+        <a href="Contact us.html">Contact Us</a>
+        <a href="Non Optimised website.html">Profile of Company Image</a>
+		<a href="Online Application form.html">Online application form</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const pages = [
+      { title: 'Privacy and Policy',       url: 'Privacy and policy.html' },
+      { title: 'Contact Us',               url: 'Contact us.html' },
+      { title: 'Profile of Company Image', url: 'Non Optimised website.html' },
+	  { title: 'Online application form',  url: 'Online Application form.html'}
+    ];
+
+    function runSearch(query) {
+      const q = query.trim().toLowerCase();
+      const resultsEl = document.getElementById('searchResults');
+      if (!q) { resultsEl.classList.remove('active'); return; }
+      const matches = pages.filter(p => p.title.toLowerCase().includes(q));
+      resultsEl.innerHTML = matches.length === 0
+        ? '<div class="search-result-item">No results found.</div>'
+        : matches.map(p =>
+            '<div class="search-result-item" onclick="window.location.href=\'' + p.url + '\'">' + p.title + '</div>'
+          ).join('');
+      resultsEl.classList.add('active');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-wrapper') && !e.target.closest('.search-bar button')) {
+        document.getElementById('searchResults').classList.remove('active');
+      }
+    });
+  </script>
+
+</body>
+</html>

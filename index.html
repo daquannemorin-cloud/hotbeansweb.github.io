@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hot Beans Web - Company Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --coffee:       #3B1F0A;
+      --coffee-mid:   #6B3A1F;
+      --coffee-light: #A0622A;
+      --cream:        #F5E6D0;
+      --cream-light:  #FDF6ED;
+      --teal:         #08CAB9;
+      --teal-deep:    #037a72;
+      --white:        #ffffff;
+      --text-dark:    #1a0a00;
+      --text-mid:     #5c3317;
+      --border:       #d4a96a;
+      --card-bg:      rgba(253,246,237,0.95);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--coffee);
+      background-image:
+        radial-gradient(ellipse at 15% 10%, rgba(107,58,31,0.8) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 90%, rgba(30,10,0,0.9) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(58,28,8,0.5) 0%, transparent 70%);
+      min-height: 100vh;
+      color: var(--text-dark);
+    }
+
+    /* ── SEARCH BAR ── */
+    .search-bar {
+      background: var(--coffee);
+      border-bottom: 2px solid var(--coffee-light);
+      padding: 12px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .search-bar input {
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: 1px solid var(--coffee-light);
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      width: 240px;
+      outline: none;
+      background: rgba(255,255,255,0.1);
+      color: var(--cream);
+    }
+    .search-bar input::placeholder { color: rgba(245,230,208,0.5); }
+    .search-bar button {
+      background: var(--coffee-light);
+      color: var(--cream);
+      border: none;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .search-bar button:hover { background: var(--teal); }
+    .search-wrapper { position: relative; }
+    .search-results {
+      display: none;
+      position: absolute;
+      top: 44px;
+      right: 0;
+      background: var(--cream-light);
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      width: 300px;
+      z-index: 999;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .search-results.active { display: block; }
+    .search-result-item {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--text-dark);
+    }
+    .search-result-item:hover { background: var(--cream); }
+    .search-result-item:last-child { border-bottom: none; }
+
+    /* ── NAV BUTTONS ── */
+    .nav-buttons {
+      background: var(--coffee-mid);
+      padding: 12px 40px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      border-bottom: 1px solid var(--coffee-light);
+    }
+    .nav-btn {
+      background: transparent;
+      color: var(--cream);
+      border: 1px solid rgba(245,230,208,0.4);
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .nav-btn:hover {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .nav-btn.active {
+      background: var(--coffee-light);
+      border-color: var(--coffee-light);
+    }
+
+    /* ── PAGE ── */
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 50px 24px 70px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      margin-bottom: 50px;
+      background: rgba(0,0,0,0.35);
+      border-radius: 24px;
+      padding: 40px;
+      border: 1px solid rgba(160,98,42,0.4);
+      backdrop-filter: blur(6px);
+    }
+    .hero-logo {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      border-radius: 16px;
+      flex-shrink: 0;
+      border: 3px solid var(--coffee-light);
+    }
+    .hero-text h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      color: var(--cream);
+      line-height: 1.05;
+      letter-spacing: -1px;
+    }
+    .hero-text h1 span {
+      color: var(--teal);
+    }
+    .hero-tagline {
+      margin-top: 14px;
+      font-size: 17px;
+      color: rgba(245,230,208,0.8);
+      font-style: italic;
+      line-height: 1.5;
+    }
+    .hero-tagline strong {
+      color: var(--teal);
+      font-style: normal;
+      font-weight: 700;
+    }
+    .hero-badges {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: rgba(8,202,185,0.15);
+      color: var(--teal);
+      border: 1px solid rgba(8,202,185,0.4);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+
+    /* ── STATS ROW ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .stat-card {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(160,98,42,0.35);
+      border-radius: 16px;
+      padding: 24px 18px;
+      text-align: center;
+      backdrop-filter: blur(4px);
+    }
+    .stat-card .number {
+      font-family: 'Syne', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-card p {
+      font-size: 12px;
+      color: rgba(245,230,208,0.7);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 36px 42px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-title .icon-badge {
+      background: var(--coffee-light);
+      color: white;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .card p {
+      font-size: 15px;
+      color: #3a2010;
+      line-height: 1.85;
+      margin-bottom: 12px;
+    }
+    .card p:last-child { margin-bottom: 0; }
+
+    /* ── SERVICES GRID ── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 6px;
+    }
+    .service-item {
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 22px 18px;
+      text-align: center;
+      border-top: 3px solid var(--coffee-light);
+    }
+    .service-item .sicon { font-size: 28px; margin-bottom: 10px; }
+    .service-item h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+    .service-item p {
+      font-size: 12px !important;
+      color: var(--text-mid) !important;
+      line-height: 1.5 !important;
+      margin-bottom: 0 !important;
+    }
+
+    /* ── WHY CHOOSE US ── */
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 6px;
+    }
+    .why-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 18px;
+      border-left: 4px solid var(--coffee-light);
+    }
+    .why-item .wicon { font-size: 22px; flex-shrink: 0; }
+    .why-item h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .why-item p {
+      font-size: 12px !important;
+      color: var(--text-mid) !important;
+      line-height: 1.5 !important;
+      margin-bottom: 0 !important;
+    }
+
+    /* ── VIDEO SECTION ── */
+    .video-card {
+      background: rgba(0,0,0,0.4);
+      border-radius: 20px;
+      padding: 36px 42px;
+      border: 1px solid rgba(160,98,42,0.4);
+      margin-bottom: 24px;
+      backdrop-filter: blur(4px);
+    }
+    .video-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .video-title .icon-badge {
+      background: var(--teal-deep);
+      color: white;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .video-subtitle {
+      font-size: 13px;
+      color: rgba(245,230,208,0.6);
+      margin-bottom: 20px;
+    }
+    .video-wrapper {
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 2px solid var(--coffee-light);
+      background: black;
+      aspect-ratio: 16/9;
+    }
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ── WEBSITE LINK ── */
+    .website-bar {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(160,98,42,0.35);
+      border-radius: 14px;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .website-bar p {
+      color: var(--cream);
+      font-size: 15px;
+    }
+    .website-bar a {
+      background: var(--teal-deep);
+      color: white;
+      text-decoration: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      font-family: 'Syne', sans-serif;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .website-bar a:hover { background: var(--teal); }
+
+    /* ── LINKS SECTION ── */
+    .links-section { margin-top: 10px; }
+    .links-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(245,230,208,0.6);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+    }
+    .links-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .links-grid a {
+      background: rgba(255,255,255,0.08);
+      color: var(--cream);
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid rgba(160,98,42,0.35);
+      transition: background 0.2s;
+    }
+    .links-grid a:hover { background: rgba(8,202,185,0.2); border-color: var(--teal); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .hero { flex-direction: column; text-align: center; padding: 28px 22px; }
+      .hero-badges { justify-content: center; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .card { padding: 28px 22px; }
+      .video-card { padding: 28px 22px; }
+      .nav-buttons { padding: 10px 16px; }
+      .search-bar { padding: 10px 16px; }
+      .search-bar input { width: 150px; }
+    }
+    @media (min-width: 601px) and (max-width: 768px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar">
+    <div class="search-wrapper">
+      <input type="text" id="siteSearch" placeholder="Search this site..."
+        oninput="runSearch(this.value)"
+        onkeydown="if(event.key==='Enter') runSearch(this.value)">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+    <button onclick="runSearch(document.getElementById('siteSearch').value)">Search</button>
+  </div>
+
+  <!-- NAV BUTTONS -->
+  <div class="nav-buttons">
+   <button class="nav-btn" onclick="window.location.href='About us.html'">About Us</button>
+    <button class="nav-btn" oneclick="window.location.href='Service and news.html'">Services and news</button>
+    <button class="nav-btn" onclick="window.location.href='Contact us.html'">Contact Us</button>
+    <button class="nav-btn" onclick="window.location.href='Privacy and policy.html'">Privacy Policy</button>
+  </div>
+
+  <div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+      <img src="Web dev LOGO.webp" class="hero-logo" alt="Hot Beans Web Logo">
+      <div class="hero-text">
+        <h1>Hot Beans <span>Web</span></h1>
+        <p class="hero-tagline">
+          <strong>"Start your web development career here"</strong><br>
+          A forward thinking digital agency crafting high quality websites
+          for businesses across a wide range of industries.
+        </p>
+        <div class="hero-badges">
+          <span class="badge">&#127381; Est. 2018</span>
+          <span class="badge">&#127758; London, UK</span>
+          <span class="badge">&#128187; Web Development</span>
+          <span class="badge">&#9733; Top Rated Agency</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="number">50+</div>
+        <p>Projects Delivered</p>
+      </div>
+      <div class="stat-card">
+        <div class="number">5+</div>
+        <p>Years Experience</p>
+      </div>
+      <div class="stat-card">
+        <div class="number">30+</div>
+        <p>Happy Clients</p>
+      </div>
+      <div class="stat-card">
+        <div class="number">100%</div>
+        <p>Client Satisfaction</p>
+      </div>
+    </div>
+
+    <!-- WHO WE ARE -->
+    <div class="card">
+      <div class="card-title">
+        <span class="icon-badge">&#9432;</span> Who We Are
+      </div>
+      <p>Hot Beans Web is a web development company based in London. We specialise in developing
+      high quality websites for businesses across a range of industries, from small independent
+      businesses to large corporate organisations.</p>
+      <p>Our team is made up of passionate developers, designers and digital strategists who are
+      dedicated to delivering modern, high performing web solutions. We believe that a great
+      website is more than just a pretty design — it needs to be fast, accessible, and built
+      to convert visitors into customers.</p>
+      <p>We are always looking for talented junior developers to join our growing team. If you
+      are passionate about web development and eager to learn, we want to hear from you.</p>
+    </div>
+
+    <!-- WHAT WE DO -->
+    <div class="card">
+      <div class="card-title">
+        <span class="icon-badge">&#128187;</span> What We Do
+      </div>
+      <div class="services-grid">
+        <div class="service-item">
+          <div class="sicon">&#127760;</div>
+          <h4>Website Design</h4>
+          <p>Beautiful, modern designs tailored to your brand identity and target audience.</p>
+        </div>
+        <div class="service-item">
+          <div class="sicon">&#128295;</div>
+          <h4>Web Development</h4>
+          <p>Clean, efficient code built to perform across all browsers and devices.</p>
+        </div>
+        <div class="service-item">
+          <div class="sicon">&#128241;</div>
+          <h4>Responsive Design</h4>
+          <p>Every site we build works perfectly on mobile, tablet and desktop.</p>
+        </div>
+        <div class="service-item">
+          <div class="sicon">&#128200;</div>
+          <h4>SEO Optimisation</h4>
+          <p>We build sites that rank well on Google and drive organic traffic.</p>
+        </div>
+        <div class="service-item">
+          <div class="sicon">&#128272;</div>
+          <h4>Website Maintenance</h4>
+          <p>Ongoing support and updates to keep your site running smoothly.</p>
+        </div>
+        <div class="service-item">
+          <div class="sicon">&#127891;</div>
+          <h4>Trainee Programme</h4>
+          <p>We train junior developers and help them launch their careers in tech.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHY CHOOSE US -->
+    <div class="card">
+      <div class="card-title">
+        <span class="icon-badge">&#11088;</span> Why Choose Us
+      </div>
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="wicon">&#9989;</div>
+          <div>
+            <h4>Quality Guaranteed</h4>
+            <p>Every project is held to the highest standard of quality before delivery.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="wicon">&#128336;</div>
+          <div>
+            <h4>On Time Delivery</h4>
+            <p>We respect deadlines and always deliver projects on time and in scope.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="wicon">&#129309;</div>
+          <div>
+            <h4>Client First Approach</h4>
+            <p>We work closely with clients at every stage to ensure satisfaction.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="wicon">&#128161;</div>
+          <div>
+            <h4>Fresh &amp; Innovative</h4>
+            <p>We stay ahead of industry trends to deliver modern, cutting-edge solutions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="video-card">
+      <div class="video-title">
+        <span class="icon-badge">&#9654;</span> About Hot Beans Web
+      </div>
+      <p class="video-subtitle">Watch this short video to learn more about what we do and who we are.</p>
+      <div class="video-wrapper">
+        <iframe
+          src="https://www.youtube.com/embed/ysEN5RaKOlA"
+          title="Hot Beans Web - About Us"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+
+    <!-- WEBSITE LINK -->
+    <div class="website-bar">
+      <p>&#127760; Visit our website: <strong>www.HotBeansWeb.com</strong></p>
+      <a href="https://www.hotbeansweb.com" target="_blank">Visit Website &rarr;</a>
+    </div>
+
+    <!-- PAGE LINKS -->
+    <div class="links-section">
+      <h2>More Pages</h2>
+      <div class="links-grid">
+        <a href="Profile of existing trainee web developers.html">Profile of existing trainee web developers</a>
+        <a href="Job Specifications and required requirements.html">Job specifications and required requirements</a>
+        <a href="Online Application form.html">Online Application form</a>
+        <a href="Links to web development courses.html">Web Development Courses</a>
+		<a href="Non Optimised website.html">Profile of comapny image</a>
+      </div>
+    </div>
+
+  </div>
+
+   <script>
+    const pages = [
+      { title: 'About Us',                              url: 'About us.html' },
+      { title: 'Services and News',                     url: 'Service and news.html' },
+      { title: 'Contact Us',                            url: 'Contact us.html' },
+      { title: 'Privacy and Policy',                    url: 'Privacy and policy.html' },
+      { title: 'Profile of Existing Trainee Web Developers', url: 'Profile of existing trainee web developers.html' },
+      { title: 'Job Specifications and Requirements',   url: 'Job Specifications and required requirements.html' },
+      { title: 'Online Application Form',               url: 'Online Application form.html' },
+      { title: 'Links to Web Dev Courses',              url: 'Links to web development courses.html' },
+    ];
+
+    function runSearch(query) {
+      const q = query.trim().toLowerCase();
+      const resultsEl = document.getElementById('searchResults');
+      if (!q) { resultsEl.classList.remove('active'); return; }
+      const matches = pages.filter(p => p.title.toLowerCase().includes(q));
+      resultsEl.innerHTML = matches.length === 0
+        ? '<div class="search-result-item">No results found.</div>'
+        : matches.map(p =>
+            '<div class="search-result-item" onclick="window.location.href=\'' + p.url + '\'">' + p.title + '</div>'
+          ).join('');
+      resultsEl.classList.add('active');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-wrapper') && !e.target.closest('.search-bar button')) {
+        document.getElementById('searchResults').classList.remove('active');
+      }
+    });
+  </script>
+
+</body>
+</html>

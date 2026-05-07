@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Specifications and Required Qualifications</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:      #08CAB9;
+      --teal-dark: #05a396;
+      --teal-deep: #037a72;
+      --off-white: #f0fdfc;
+      --text-dark: #0d2b29;
+      --text-mid:  #2e6e68;
+      --border:    #b2ebe6;
+      --card-bg:   rgba(255,255,255,0.93);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--teal);
+      background-image:
+        radial-gradient(ellipse at 10% 20%, rgba(255,255,255,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 80%, rgba(5,100,90,0.25) 0%, transparent 50%);
+      min-height: 100vh;
+      color: var(--text-dark);
+    }
+
+    /* ── SEARCH BAR (site search) ── */
+    .search-bar {
+      background: var(--teal-deep);
+      padding: 10px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+    .search-bar input {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: none;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      width: 240px;
+      outline: none;
+      background: rgba(255,255,255,0.15);
+      color: white;
+    }
+    .search-bar input::placeholder { color: rgba(255,255,255,0.6); }
+    .search-bar button {
+      background: white;
+      color: var(--teal-deep);
+      border: none;
+      padding: 7px 18px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+    }
+    .search-wrapper { position: relative; }
+    .search-results {
+      display: none;
+      position: absolute;
+      top: 44px;
+      right: 0;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      width: 300px;
+      z-index: 999;
+      overflow: hidden;
+    }
+    .search-results.active { display: block; }
+    .search-result-item {
+      padding: 12px 18px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      cursor: pointer;
+      color: var(--text-dark);
+    }
+    .search-result-item:hover { background: var(--off-white); }
+    .search-result-item:last-child { border-bottom: none; }
+
+    /* ── PAGE ── */
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 50px 24px 70px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(30px, 5vw, 52px);
+      font-weight: 800;
+      color: white;
+      letter-spacing: -1.5px;
+      line-height: 1.05;
+    }
+    .hero h1 span {
+      color: var(--teal-deep);
+      background: white;
+      padding: 0 10px;
+      border-radius: 6px;
+    }
+    .hero p {
+      margin-top: 14px;
+      font-size: 15px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.8;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── JOB SEARCH BOX ── */
+    .job-search-box {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px 36px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      border: 1px solid rgba(255,255,255,0.6);
+      margin-bottom: 36px;
+    }
+    .job-search-box h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .job-search-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .job-search-row input,
+    .job-search-row select {
+      flex: 1;
+      min-width: 160px;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-dark);
+      outline: none;
+      background: white;
+      transition: border-color 0.2s;
+    }
+    .job-search-row input:focus,
+    .job-search-row select:focus {
+      border-color: var(--teal);
+    }
+    .job-search-row button {
+      background: var(--teal-deep);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .job-search-row button:hover { background: var(--teal-dark); }
+
+    /* ── JOB RESULTS COUNT ── */
+    .results-bar {
+      font-size: 13px;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 20px;
+      padding: 0 4px;
+    }
+    .results-bar span {
+      font-weight: 700;
+      color: white;
+    }
+
+    /* ── JOB CARDS ── */
+    .jobs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 50px;
+    }
+
+    .job-card {
+      background: var(--card-bg);
+      border-radius: 0;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-bottom: none;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .job-card:first-child { border-radius: 18px 18px 0 0; }
+    .job-card:last-child  { border-radius: 0 0 18px 18px; border-bottom: 1px solid rgba(255,255,255,0.5); }
+    .job-card:only-child  { border-radius: 18px; border-bottom: 1px solid rgba(255,255,255,0.5); }
+
+    /* Job card header (always visible) */
+    .job-header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 22px 28px;
+      cursor: pointer;
+      background: var(--card-bg);
+      transition: background 0.15s;
+    }
+    .job-header:hover { background: var(--off-white); }
+    .job-icon {
+      font-size: 36px;
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      background: var(--off-white);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--border);
+    }
+    .job-meta { flex: 1; }
+    .job-meta h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .job-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .job-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .badge-type  { background: #e0f7f5; color: var(--teal-deep); border: 1px solid var(--border); }
+    .badge-loc   { background: #fff3e0; color: #a05000; border: 1px solid #ffd199; }
+    .badge-level { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+    .badge-sal   { background: #f3e5f5; color: #6a1b9a; border: 1px solid #ce93d8; }
+    .job-arrow {
+      font-size: 18px;
+      color: var(--text-mid);
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+    .job-card.open .job-arrow { transform: rotate(180deg); }
+
+    /* Job card body (expandable) */
+    .job-body {
+      display: none;
+      padding: 0 28px 28px;
+      border-top: 2px solid var(--border);
+    }
+    .job-card.open .job-body { display: block; }
+
+    .job-body-inner {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 28px;
+      margin-top: 24px;
+    }
+
+    .job-location-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+    }
+    .job-location-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-mid);
+      text-align: center;
+      margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .job-video-wrapper {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      background: black;
+      margin-top: 16px;
+    }
+    .job-video-wrapper iframe {
+      width: 100%; height: 100%;
+      border: none; display: block;
+    }
+
+    .job-section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--teal-deep);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+    .job-body p {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+    .req-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .req-list li {
+      font-size: 13px;
+      color: #444;
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .req-list li::before {
+      content: '✓';
+      color: var(--teal-deep);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .apply-btn {
+      display: inline-block;
+      margin-top: 22px;
+      background: var(--teal-deep);
+      color: white;
+      text-decoration: none;
+      padding: 13px 32px;
+      border-radius: 10px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      transition: background 0.2s, transform 0.1s;
+      border: none;
+      cursor: pointer;
+    }
+    .apply-btn:hover { background: var(--teal-dark); transform: translateY(-1px); }
+
+    /* NO RESULTS */
+    .no-results {
+      display: none;
+      text-align: center;
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 50px 30px;
+      color: var(--text-mid);
+      font-size: 15px;
+    }
+    .no-results .big { font-size: 48px; margin-bottom: 16px; }
+
+    /* ── SPECS SECTION ── */
+    .specs-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 36px 42px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      border: 1px solid rgba(255,255,255,0.6);
+      margin-bottom: 24px;
+    }
+    .specs-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .specs-title .sbadge {
+      background: var(--teal);
+      color: white;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 6px;
+    }
+    .spec-item {
+      background: var(--off-white);
+      border-radius: 12px;
+      padding: 18px 20px;
+      border-left: 4px solid var(--teal);
+    }
+    .spec-item h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+    .spec-item p {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      margin-bottom: 20px;
+      margin-top: 44px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* ── LINKS ── */
+    .links-section { margin-top: 10px; }
+    .links-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+    }
+    .links-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .links-grid a {
+      background: rgba(255,255,255,0.18);
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: background 0.2s;
+    }
+    .links-grid a:hover { background: rgba(255,255,255,0.3); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .job-body-inner { grid-template-columns: 1fr; }
+      .specs-grid { grid-template-columns: 1fr; }
+      .job-search-row { flex-direction: column; }
+      .specs-card { padding: 28px 22px; }
+      .job-search-box { padding: 24px 22px; }
+      .search-bar { padding: 10px 16px; }
+      .search-bar input { width: 150px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SITE SEARCH BAR -->
+  <div class="search-bar">
+    <div class="search-wrapper">
+      <input type="text" id="siteSearch" placeholder="Search this site..."
+        oninput="runSiteSearch(this.value)"
+        onkeydown="if(event.key==='Enter') runSiteSearch(this.value)">
+      <div class="search-results" id="siteSearchResults"></div>
+    </div>
+    <button onclick="runSiteSearch(document.getElementById('siteSearch').value)">Search</button>
+  </div>
+
+  <div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+      <h1>Job Specifications &amp; <span>Requirements</span></h1>
+      <p>We are currently recruiting for several exciting roles. Browse our open positions below,
+      read the full job descriptions and apply today to start your web development career with
+      Hot Beans Web.</p>
+    </div>
+
+    <!-- JOB SEARCH BOX -->
+    <div class="job-search-box">
+      <h2>&#128269; Search Available Jobs</h2>
+      <div class="job-search-row">
+        <input type="text" id="jobKeyword" placeholder="Job title or keyword..." oninput="filterJobs()">
+        <select id="jobType" onchange="filterJobs()">
+          <option value="">All Job Types</option>
+          <option value="Full Time">Full Time</option>
+          <option value="Part Time">Part Time</option>
+          <option value="Apprenticeship">Apprenticeship</option>
+          <option value="Internship">Internship</option>
+        </select>
+        <select id="jobLevel" onchange="filterJobs()">
+          <option value="">All Levels</option>
+          <option value="Junior">Junior</option>
+          <option value="Mid">Mid-Level</option>
+          <option value="Senior">Senior</option>
+        </select>
+        <button onclick="filterJobs()">&#128269; Search Jobs</button>
+      </div>
+    </div>
+
+    <!-- RESULTS BAR -->
+    <div class="results-bar" id="resultsBar">Showing <span id="resultsCount">5</span> jobs</div>
+
+    <!-- JOB LISTINGS -->
+    <div class="jobs-list" id="jobsList">
+
+      <!-- JOB 1 -->
+      <div class="job-card" data-title="Junior Web Developer" data-type="Full Time" data-level="Junior">
+        <div class="job-header" onclick="toggleJob(this)">
+          <div class="job-icon">&#128187;</div>
+          <div class="job-meta">
+            <h3>Junior Web Developer</h3>
+            <div class="job-badges">
+              <span class="job-badge badge-type">Full Time</span>
+              <span class="job-badge badge-loc">&#128205; London, UK</span>
+              <span class="job-badge badge-level">Junior</span>
+              <span class="job-badge badge-sal">&#163;24,000 – &#163;28,000</span>
+            </div>
+          </div>
+          <div class="job-arrow">&#8964;</div>
+        </div>
+        <div class="job-body">
+          <div class="job-body-inner">
+            <div class="job-left">
+              <div class="job-section-title">About the Role</div>
+              <p>We are looking for an enthusiastic Junior Web Developer to join our growing team
+              in London. You will work alongside senior developers and designers to build
+              accessible, responsive and high performing websites for a range of clients across
+              different industries.</p>
+              <p>This is a fantastic opportunity for someone who has recently completed a degree,
+              bootcamp or self-taught journey in web development and is looking to kickstart their
+              career in a supportive, fast-paced environment.</p>
+
+              <div class="job-section-title">What You'll Do</div>
+              <ul class="req-list">
+                <li>Build and maintain websites using HTML, CSS and JavaScript</li>
+                <li>Work closely with designers to bring UI/UX designs to life</li>
+                <li>Test websites across different browsers and screen sizes</li>
+                <li>Collaborate with the team in daily stand-ups and sprint reviews</li>
+                <li>Fix bugs and resolve technical issues reported by clients</li>
+                <li>Keep up to date with the latest web development trends and technologies</li>
+              </ul>
+
+              <div class="job-section-title">Requirements</div>
+              <ul class="req-list">
+                <li>Good knowledge of HTML5, CSS3 and JavaScript</li>
+                <li>Understanding of responsive design and mobile-first development</li>
+                <li>Familiarity with version control (Git)</li>
+                <li>Strong attention to detail and a passion for clean code</li>
+                <li>Good communication skills and a team-first attitude</li>
+                <li>A portfolio of personal or academic projects is desirable</li>
+              </ul>
+
+              <div class="job-section-title">&#127909; Role Introduction Video</div>
+              <div class="job-video-wrapper">
+                <iframe src="https://www.youtube.com/embed/UB1O30fR-EE"
+                  title="Junior Web Developer" allowfullscreen></iframe>
+              </div>
+
+              <a class="apply-btn" href="Online Application form.html">Apply Now &rarr;</a>
+            </div>
+            <div class="job-right">
+              <div class="job-section-title">&#128205; Office Location</div>
+              <img class="job-location-img" src="office-building-1.jpg" alt="London Office">
+              <div class="job-location-label">&#128205; Shoreditch, London</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JOB 2 -->
+      <div class="job-card" data-title="UI/UX Designer" data-type="Full Time" data-level="Mid">
+        <div class="job-header" onclick="toggleJob(this)">
+          <div class="job-icon">&#127912;</div>
+          <div class="job-meta">
+            <h3>UI/UX Designer</h3>
+            <div class="job-badges">
+              <span class="job-badge badge-type">Full Time</span>
+              <span class="job-badge badge-loc">&#128205; Manchester, UK</span>
+              <span class="job-badge badge-level">Mid</span>
+              <span class="job-badge badge-sal">&#163;28,000 – &#163;34,000</span>
+            </div>
+          </div>
+          <div class="job-arrow">&#8964;</div>
+        </div>
+        <div class="job-body">
+          <div class="job-body-inner">
+            <div class="job-left">
+              <div class="job-section-title">About the Role</div>
+              <p>We are seeking a creative and detail-oriented UI/UX Designer to join our design
+              team in Manchester. You will be responsible for creating beautiful, user-centred
+              designs that deliver outstanding digital experiences for our clients.</p>
+              <p>You will collaborate closely with developers and project managers to ensure
+              designs are not only visually stunning but also practical, accessible and easy to
+              implement.</p>
+
+              <div class="job-section-title">What You'll Do</div>
+              <ul class="req-list">
+                <li>Design wireframes, mockups and prototypes using Figma or Adobe XD</li>
+                <li>Create visual design systems and component libraries</li>
+                <li>Conduct user research and usability testing</li>
+                <li>Collaborate with developers to hand off designs accurately</li>
+                <li>Ensure all designs meet accessibility standards (WCAG)</li>
+                <li>Present designs to clients and gather feedback</li>
+              </ul>
+
+              <div class="job-section-title">Requirements</div>
+              <ul class="req-list">
+                <li>Proficiency in Figma, Sketch or Adobe XD</li>
+                <li>Strong understanding of UX principles and user-centred design</li>
+                <li>Experience creating responsive designs for web and mobile</li>
+                <li>A strong portfolio showcasing a range of design work</li>
+                <li>Good communication and presentation skills</li>
+                <li>Basic knowledge of HTML and CSS is a bonus</li>
+              </ul>
+
+              <div class="job-section-title">&#127909; Role Introduction Video</div>
+              <div class="job-video-wrapper">
+                <iframe src="https://www.youtube.com/embed/5IanQIwhA2E"
+                  title="UI UX Design" allowfullscreen></iframe>
+              </div>
+
+              <a class="apply-btn" href="Online Application form.html">Apply Now &rarr;</a>
+            </div>
+            <div class="job-right">
+              <div class="job-section-title">&#128205; Office Location</div>
+              <img class="job-location-img" src="office-building-1.jpg" alt="Manchester Office">
+              <div class="job-location-label">&#128205; Northern Quarter, Manchester</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JOB 3 -->
+      <div class="job-card" data-title="QA Test Engineer" data-type="Full Time" data-level="Junior">
+        <div class="job-header" onclick="toggleJob(this)">
+          <div class="job-icon">&#128203;</div>
+          <div class="job-meta">
+            <h3>QA Test Engineer</h3>
+            <div class="job-badges">
+              <span class="job-badge badge-type">Full Time</span>
+              <span class="job-badge badge-loc">&#128205; Remote, UK</span>
+              <span class="job-badge badge-level">Junior</span>
+              <span class="job-badge badge-sal">&#163;22,000 – &#163;26,000</span>
+            </div>
+          </div>
+          <div class="job-arrow">&#8964;</div>
+        </div>
+        <div class="job-body">
+          <div class="job-body-inner">
+            <div class="job-left">
+              <div class="job-section-title">About the Role</div>
+              <p>We are looking for a thorough and methodical QA Test Engineer to join our
+              quality assurance team on a fully remote basis. You will be responsible for
+              testing our web projects to ensure they meet the highest standards of quality
+              before they are delivered to clients.</p>
+              <p>This role is perfect for someone who has a sharp eye for detail and takes pride
+              in ensuring that everything works exactly as it should across all browsers and
+              devices.</p>
+
+              <div class="job-section-title">What You'll Do</div>
+              <ul class="req-list">
+                <li>Write and execute manual test cases for web applications</li>
+                <li>Test across multiple browsers, devices and screen sizes</li>
+                <li>Identify, document and track bugs using project management tools</li>
+                <li>Work with developers to reproduce and resolve issues</li>
+                <li>Perform regression testing after bug fixes</li>
+                <li>Contribute to improving the overall QA process</li>
+              </ul>
+
+              <div class="job-section-title">Requirements</div>
+              <ul class="req-list">
+                <li>Understanding of software testing principles and methodologies</li>
+                <li>Experience writing clear and structured test cases</li>
+                <li>Knowledge of browser developer tools</li>
+                <li>Good understanding of HTML, CSS and JavaScript basics</li>
+                <li>Strong analytical and problem-solving skills</li>
+                <li>Experience with tools like Jira or Trello is a bonus</li>
+              </ul>
+
+              <div class="job-section-title">&#127909; Role Introduction Video</div>
+              <div class="job-video-wrapper">
+                <iframe src="https://www.youtube.com/embed/oLc9gVM8FBM"
+                  title="QA Testing" allowfullscreen></iframe>
+              </div>
+
+              <a class="apply-btn" href="Online Application form.html">Apply Now &rarr;</a>
+            </div>
+            <div class="job-right">
+              <div class="job-section-title">&#128205; Work Location</div>
+              <img class="job-location-img" src="office-building-1.jpg" alt="Remote Work">
+              <div class="job-location-label">&#128187; Fully Remote — UK Based</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JOB 4 -->
+      <div class="job-card" data-title="Web Development Apprentice" data-type="Apprenticeship" data-level="Junior">
+        <div class="job-header" onclick="toggleJob(this)">
+          <div class="job-icon">&#127891;</div>
+          <div class="job-meta">
+            <h3>Web Development Apprentice</h3>
+            <div class="job-badges">
+              <span class="job-badge badge-type">Apprenticeship</span>
+              <span class="job-badge badge-loc">&#128205; Birmingham, UK</span>
+              <span class="job-badge badge-level">Junior</span>
+              <span class="job-badge badge-sal">&#163;14,000 – &#163;18,000</span>
+            </div>
+          </div>
+          <div class="job-arrow">&#8964;</div>
+        </div>
+        <div class="job-body">
+          <div class="job-body-inner">
+            <div class="job-left">
+              <div class="job-section-title">About the Role</div>
+              <p>Our Web Development Apprenticeship programme is an incredible opportunity for
+              school leavers and career changers to earn while they learn. You will spend time
+              working on real client projects under the supervision of senior developers while
+              also completing structured learning modules.</p>
+              <p>By the end of the programme you will have a nationally recognised qualification,
+              a strong portfolio of real-world work and the confidence to work as a junior
+              developer.</p>
+
+              <div class="job-section-title">What You'll Do</div>
+              <ul class="req-list">
+                <li>Learn HTML, CSS and JavaScript through structured training modules</li>
+                <li>Assist senior developers with client website projects</li>
+                <li>Complete coursework and assessments as part of your apprenticeship</li>
+                <li>Attend team meetings and contribute ideas</li>
+                <li>Build a portfolio of real work to use in future job applications</li>
+              </ul>
+
+              <div class="job-section-title">Requirements</div>
+              <ul class="req-list">
+                <li>Passion for web development and technology</li>
+                <li>Good maths and English GCSE grades (C/4 or above)</li>
+                <li>Eagerness to learn and a positive attitude</li>
+                <li>Basic computer literacy</li>
+                <li>No prior coding experience required — we will teach you everything</li>
+              </ul>
+
+              <div class="job-section-title">&#127909; About Apprenticeships</div>
+              <div class="job-video-wrapper">
+                <iframe src="https://www.youtube.com/embed/kUMe1FH4CHE"
+                  title="Apprenticeship" allowfullscreen></iframe>
+              </div>
+
+              <a class="apply-btn" href="Online Application form.html">Apply Now &rarr;</a>
+            </div>
+            <div class="job-right">
+              <div class="job-section-title">&#128205; Office Location</div>
+              <img class="job-location-img" src="office-building-1.jpg" alt="Birmingham Office">
+              <div class="job-location-label">&#128205; City Centre, Birmingham</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JOB 5 -->
+      <div class="job-card" data-title="Senior Front-End Developer" data-type="Full Time" data-level="Senior">
+        <div class="job-header" onclick="toggleJob(this)">
+          <div class="job-icon">&#11088;</div>
+          <div class="job-meta">
+            <h3>Senior Front-End Developer</h3>
+            <div class="job-badges">
+              <span class="job-badge badge-type">Full Time</span>
+              <span class="job-badge badge-loc">&#128205; London, UK</span>
+              <span class="job-badge badge-level">Senior</span>
+              <span class="job-badge badge-sal">&#163;45,000 – &#163;58,000</span>
+            </div>
+          </div>
+          <div class="job-arrow">&#8964;</div>
+        </div>
+        <div class="job-body">
+          <div class="job-body-inner">
+            <div class="job-left">
+              <div class="job-section-title">About the Role</div>
+              <p>We are looking for an experienced Senior Front-End Developer to lead development
+              on our most complex and high profile client projects. You will mentor junior
+              developers, architect front-end solutions and set the technical standards for the
+              team.</p>
+              <p>This is a leadership role for someone who is confident in their technical
+              abilities, passionate about quality and ready to take the next step in their career.</p>
+
+              <div class="job-section-title">What You'll Do</div>
+              <ul class="req-list">
+                <li>Lead front-end development on large-scale web projects</li>
+                <li>Mentor and support junior and mid-level developers</li>
+                <li>Architect scalable, maintainable front-end codebases</li>
+                <li>Conduct code reviews and enforce best practices</li>
+                <li>Collaborate with designers and back-end developers</li>
+                <li>Drive performance optimisation across all projects</li>
+              </ul>
+
+              <div class="job-section-title">Requirements</div>
+              <ul class="req-list">
+                <li>4+ years of professional front-end development experience</li>
+                <li>Expert level HTML, CSS and JavaScript skills</li>
+                <li>Experience with a modern JS framework (React, Vue or Angular)</li>
+                <li>Strong understanding of web performance and accessibility</li>
+                <li>Experience with Git, CI/CD and agile workflows</li>
+                <li>Excellent communication and leadership skills</li>
+              </ul>
+
+              <div class="job-section-title">&#127909; Role Introduction Video</div>
+              <div class="job-video-wrapper">
+                <iframe src="https://www.youtube.com/embed/1Rs2ND1ryYc"
+                  title="Senior Developer" allowfullscreen></iframe>
+              </div>
+
+              <a class="apply-btn" href="Online Application form.html">Apply Now &rarr;</a>
+            </div>
+            <div class="job-right">
+              <div class="job-section-title">&#128205; Office Location</div>
+              <img class="job-location-img" src="office-building-1.jpg" alt="London Office">
+              <div class="job-location-label">&#128205; Canary Wharf, London</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /jobs-list -->
+
+    <!-- NO RESULTS -->
+    <div class="no-results" id="noResults">
+      <div class="big">&#128269;</div>
+      <p>No jobs found matching your search. Try different keywords or filters.</p>
+    </div>
+
+    <!-- GENERAL SPECS SECTION -->
+    <div class="section-label">&#128203; General Requirements for All Roles</div>
+
+    <div class="specs-card">
+      <div class="specs-title"><span class="sbadge">&#9432;</span> What We Look For</div>
+      <p style="font-size:14px; color:#444; line-height:1.8; margin-bottom:20px;">
+        Regardless of the specific role, all candidates at Hot Beans Web are expected to bring
+        a positive attitude, a willingness to learn and the ability to work well in a team.
+        Below are the core qualities and requirements that apply across all positions.
+      </p>
+      <div class="specs-grid">
+        <div class="spec-item">
+          <h4>&#128187; Technical Foundation</h4>
+          <p>All applicants must have a strong understanding of core web technologies including
+          HTML, CSS and JavaScript. Knowledge of responsive design principles and accessibility
+          standards is essential.</p>
+        </div>
+        <div class="spec-item">
+          <h4>&#127891; Education &amp; Experience</h4>
+          <p>A relevant degree, bootcamp certificate or demonstrable self-taught experience is
+          required. We value practical skills and a strong portfolio above formal qualifications.</p>
+        </div>
+        <div class="spec-item">
+          <h4>&#128161; Problem Solving Skills</h4>
+          <p>You should be able to think logically, break down complex problems and find
+          efficient, elegant solutions. We look for developers who enjoy the challenge of
+          debugging and continuous improvement.</p>
+        </div>
+        <div class="spec-item">
+          <h4>&#129309; Communication</h4>
+          <p>Strong verbal and written communication skills are essential. You will be working
+          with clients, designers and developers daily, so the ability to explain technical
+          concepts clearly is very important.</p>
+        </div>
+        <div class="spec-item">
+          <h4>&#128200; Continuous Learning</h4>
+          <p>The web industry moves fast. We expect all team members to stay curious, keep
+          learning and actively engage with new tools, frameworks and best practices as they
+          emerge.</p>
+        </div>
+        <div class="spec-item">
+          <h4>&#128336; Reliability &amp; Punctuality</h4>
+          <p>We trust our team to deliver on time and to the standard agreed. Good time
+          management, meeting deadlines and proactively communicating any blockers are all
+          essential qualities.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="specs-card">
+      <div class="specs-title"><span class="sbadge">&#128196;</span> Coding Languages &amp; Technologies</div>
+      <img src="Coding Languages.jpg" style="width:100%; border-radius:12px; border:2px solid var(--border); margin-bottom:16px;" alt="Coding Languages">
+      <div class="specs-grid">
+        <div class="spec-item"><h4>HTML5</h4><p>The foundation of all web pages. A solid understanding of semantic HTML is required for all roles.</p></div>
+        <div class="spec-item"><h4>CSS3</h4><p>Styling, animations, flexbox and grid. All candidates should be comfortable writing clean, maintainable CSS.</p></div>
+        <div class="spec-item"><h4>JavaScript</h4><p>Core programming logic, DOM manipulation and event handling. ES6+ knowledge is expected.</p></div>
+        <div class="spec-item"><h4>Bootstrap</h4><p>Familiarity with a CSS framework like Bootstrap or Tailwind is desirable for most roles.</p></div>
+        <div class="spec-item"><h4>React / Vue</h4><p>Experience with a modern JS framework is required for mid-level and senior positions.</p></div>
+        <div class="spec-item"><h4>Git &amp; Version Control</h4><p>All developers must be comfortable using Git for version control and collaborating on shared codebases.</p></div>
+      </div>
+    </div>
+
+    <!-- PAGE LINKS -->
+    <div class="links-section">
+      <h2>Pages</h2>
+      <div class="links-grid">
+        <a href="Profile of Company image.html">Profile of Company Image</a>
+        <a href="Profile of existing trainee web developers.html">Profile of Existing Trainee Web Developers</a>
+        <a href="Online Application form.html">Online Application Form</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ── TOGGLE JOB CARD ──
+    function toggleJob(header) {
+      const card = header.closest('.job-card');
+      card.classList.toggle('open');
+    }
+
+    // ── JOB SEARCH / FILTER ──
+    function filterJobs() {
+      const keyword  = document.getElementById('jobKeyword').value.toLowerCase().trim();
+      const type     = document.getElementById('jobType').value;
+      const level    = document.getElementById('jobLevel').value;
+      const cards    = document.querySelectorAll('.job-card');
+      let visible    = 0;
+
+      cards.forEach(card => {
+        const title    = card.dataset.title.toLowerCase();
+        const cardType = card.dataset.type;
+        const cardLvl  = card.dataset.level;
+
+        const matchKw  = !keyword || title.includes(keyword);
+        const matchTy  = !type    || cardType === type;
+        const matchLv  = !level   || cardLvl  === level;
+
+        if (matchKw && matchTy && matchLv) {
+          card.style.display = '';
+          visible++;
+        } else {
+          card.style.display = 'none';
+          card.classList.remove('open');
+        }
+      });
+
+      document.getElementById('resultsCount').textContent = visible;
+      document.getElementById('noResults').style.display  = visible === 0 ? 'block' : 'none';
+      document.getElementById('jobsList').style.display   = visible === 0 ? 'none'  : '';
+    }
+
+    // ── SITE SEARCH ──
+    const pages = [
+      { title: 'Profile of Company Image',                  url: 'Profile of Company image.html' },
+      { title: 'Profile of Existing Trainee Web Developers',url: 'Profile of existing trainee web developers.html' },
+      { title: 'Job Specifications and Requirements',        url: 'Job Specifications and required requirements.html' },
+      { title: 'Online Application Form',                    url: 'Online Application form.html' },
+      { title: 'About Us',                                   url: 'About us.html' },
+      { title: 'Contact Us',                                 url: 'Contact us.html' },
+      { title: 'Privacy and Policy',                         url: 'Privacy and policy.html' },
+      { title: 'Services and News',                          url: 'Services and news.html' },
+    ];
+
+    function runSiteSearch(query) {
+      const q = query.trim().toLowerCase();
+      const resultsEl = document.getElementById('siteSearchResults');
+      if (!q) { resultsEl.classList.remove('active'); return; }
+      const matches = pages.filter(p => p.title.toLowerCase().includes(q));
+      resultsEl.innerHTML = matches.length === 0
+        ? '<div class="search-result-item">No results found.</div>'
+        : matches.map(p =>
+            '<div class="search-result-item" onclick="window.location.href=\'' + p.url + '\'">' + p.title + '</div>'
+          ).join('');
+      resultsEl.classList.add('active');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.search-wrapper') && !e.target.closest('.search-bar button')) {
+        document.getElementById('siteSearchResults').classList.remove('active');
+      }
+    });
+  </script>
+
+</body>
+</html>
